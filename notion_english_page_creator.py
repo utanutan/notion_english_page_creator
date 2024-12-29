@@ -6,6 +6,7 @@ from typing import Dict, List
 from dotenv import load_dotenv
 from notion_client import Client
 from openai import OpenAI
+from prompts import SYSTEM_PROMPT, USER_PROMPT
 
 # ロギングの設定
 logging.basicConfig(
@@ -67,15 +68,8 @@ def generate_explanation_from_chatgpt(word: str) -> str:
         response = client.chat.completions.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": "あなたは英語を教える優秀な教師です。"},
-                {"role": "user", "content": f"""以下の形式で「{word}」を解説してください。
-各項目は必ず「項目名:」で始めてください：
-
-品詞: 単語の品詞を記述
-意味: 簡潔な日本語の意味
-語源: 語源の説明（50文字以内）
-例文: 英文と日本語訳のペア
-関連語: 関連する単語や表現の説明（100文字以内）"""}
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": USER_PROMPT.format(word=word)},
             ]
         )
         return response.choices[0].message.content
@@ -103,8 +97,6 @@ def create_or_update_notion_page(word: str, explanation: str, page_id: str = Non
     Notionページを作成または更新し、フラグを更新
     """
     try:
-        # デバッグ用にChatGPTの出力を表示
-        logger.info(f"ChatGPTの出力:\n{explanation}")
         
         # 解説を各セクションに分割
         sections = {
@@ -141,11 +133,6 @@ def create_or_update_notion_page(word: str, explanation: str, page_id: str = Non
             # 現在のセクションの内容を更新
             if current_section:
                 sections[current_section] = ' '.join(current_content)
-
-        # デバッグ用にパース結果を表示
-        logger.info("パース結果:")
-        for key, value in sections.items():
-            logger.info(f"{key}: {value}")
 
         page_properties = {
             "単語": {"title": [{"text": {"content": word.lower()}}]},
