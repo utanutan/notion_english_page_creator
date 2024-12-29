@@ -58,7 +58,7 @@ python notion_english_page_creator.py
 - 必要なパッケージ：
   - python-dotenv==1.0.0
   - requests==2.31.0
-  - openai==1.3.7
+  - openai==1.6.1
   - notion-client==2.2.1
 
 ## Notionデータベースの設定
@@ -74,7 +74,7 @@ python notion_english_page_creator.py
 ```
 python-dotenv==1.0.0
 requests==2.31.0
-openai==1.3.7
+openai==1.6.1
 notion-client==2.2.1
 ```
 
