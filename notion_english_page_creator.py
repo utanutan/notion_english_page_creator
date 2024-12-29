@@ -5,7 +5,7 @@ from typing import Dict, List
 
 from dotenv import load_dotenv
 from notion_client import Client
-from openai import OpenAI
+import openai
 from prompts import SYSTEM_PROMPT, USER_PROMPT
 
 # ロギングの設定
@@ -23,7 +23,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # APIクライアントの初期化
 notion = Client(auth=NOTION_TOKEN)
-client = OpenAI(api_key=OPENAI_API_KEY)
+openai.api_key = OPENAI_API_KEY
 
 def get_unprocessed_words() -> List[Dict]:
     """
@@ -65,8 +65,8 @@ def generate_explanation_from_chatgpt(word: str) -> str:
     word = word.lower().strip()
     
     try:
-        response = client.chat.completions.create(
-            model="gpt-4o",
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": USER_PROMPT.format(word=word)},
