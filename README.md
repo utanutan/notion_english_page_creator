@@ -54,11 +54,11 @@ python notion_english_page_creator.py
 
 ## 必要な環境
 
-- Python 3.10.7
+- Python 3.11.11
 - 必要なパッケージ：
   - python-dotenv==1.0.0
   - requests==2.31.0
-  - openai==1.6.1
+  - openai==0.28.1
   - notion-client==2.2.1
 
 ## Notionデータベースの設定
