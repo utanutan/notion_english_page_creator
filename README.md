@@ -16,6 +16,57 @@ Notion のデータベースから単語リストを取得し、ChatGPT（GPT-4o
   - 既存ページの自動削除と再作成
 - ページ作成状態の管理
 
+## セットアップ
+
+1. 必要なパッケージをインストール：
+```bash
+pip install -r requirements.txt
+```
+
+2. 環境変数の設定：
+`.env`ファイルを作成し、以下の情報を設定：
+```
+NOTION_TOKEN=your_notion_api_token
+NOTION_DATABASE_ID=your_notion_database_id
+OPENAI_API_KEY=your_openai_api_key
+```
+
+## 使用方法
+
+### ローカルでの実行
+
+```bash
+python notion_english_page_creator.py
+```
+
+### GitHub Actionsでの自動実行
+
+このツールはGitHub Actionsを使用して自動実行することができます。
+
+1. GitHubリポジトリの Settings > Secrets and variables > Actions で以下の環境変数を設定：
+   - `NOTION_TOKEN`: Notion APIトークン
+   - `NOTION_DATABASE_ID`: NotionデータベースのID
+   - `OPENAI_API_KEY`: OpenAI APIキー
+
+2. 自動実行スケジュール：
+   - 毎日午前10時（日本時間）に自動実行
+   - GitHubリポジトリの "Actions" タブから手動実行も可能
+
+## 必要な環境
+
+- Python 3.11以上
+- 必要なパッケージ：
+  - python-dotenv==1.0.0
+  - requests==2.31.0
+  - openai==1.3.7
+  - notion-client==2.2.1
+
+## Notionデータベースの設定
+
+以下のプロパティを持つデータベースを作成：
+- 単語（タイトル）: 解説する英単語
+- ページ作成（チェックボックス）: 解説ページが作成されたかどうか
+
 ## システム要件
 
 ### 必要なパッケージ
@@ -32,19 +83,6 @@ NOTION_TOKEN=your_notion_api_token
 NOTION_DATABASE_ID=your_database_id
 OPENAI_API_KEY=your_openai_api_key
 ```
-
-### Notion データベース構造
-
-データベースには以下のプロパティが必要です：
-
-1. **単語 (テキスト)**
-   - 解説対象の英単語
-   - 例: "implicit", "realm", "concept"
-
-2. **ページ作成 (チェックボックス)**
-   - ページ作成状態の管理
-   - `false`: 未作成
-   - `true`: 作成済み
 
 ## 処理フロー
 
@@ -66,18 +104,3 @@ OPENAI_API_KEY=your_openai_api_key
      - 見出し2: 各セクション（意味、語源、例文、関連語）
      - 段落: 各セクションの内容
    - ページ作成フラグを true に更新
-
-## 使用方法
-
-1. 必要なパッケージをインストール：
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. 環境変数を設定：
-   - `.env` ファイルを作成し、必要な環境変数を設定
-
-3. スクリプトを実行：
-   ```bash
-   python notion_english_page_creator.py
-   ```
