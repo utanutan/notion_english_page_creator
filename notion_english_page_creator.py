@@ -23,7 +23,10 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # APIクライアントの初期化
 notion = Client(auth=NOTION_TOKEN)
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = OpenAI(
+    api_key=OPENAI_API_KEY,
+    http_client=None
+)
 
 def get_unprocessed_words() -> List[Dict]:
     """
