@@ -54,7 +54,7 @@ python notion_english_page_creator.py
 
 ## 必要な環境
 
-- Python 3.13以上
+- Python 3.10.7
 - 必要なパッケージ：
   - python-dotenv==1.0.0
   - requests==2.31.0
